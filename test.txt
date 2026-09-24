@@ -1,0 +1,4 @@
+Linux is an operating system.
+I am learning Linux programming.
+This is an Operating Systems assignment.
+Linux provides many useful commands.
