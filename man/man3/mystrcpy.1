@@ -1,0 +1,19 @@
+
+.TH MYSTRCPY 1 "September 2026" "OS Assignment" "User Commands"
+.SH NAME
+mystrcpy \- copy a string
+.SH SYNOPSIS
+.B #include "mystrfunctions.h"
+.br
+.B char *mystrcpy(char *dest, const char *src);
+.SH DESCRIPTION
+The
+.B mystrcpy
+function copies the string pointed to by
+.B src
+into the character array pointed to by
+.B dest.
+The null terminating character is also copied.
+The destination must have enough space to store the copied string.
+.SH AUTHOR
+Fatima Nadeem <fatiinadeem1@gmail.com>

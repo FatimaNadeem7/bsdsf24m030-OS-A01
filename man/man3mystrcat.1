@@ -1,0 +1,21 @@
+.TH MYSTRCAT 1 "September 2026" "OS Assignment" "User Commands"
+.SH NAME
+mystrcat \- concatenate two strings
+.SH SYNOPSIS
+.B #include "mystrfunctions.h"
+.br
+.B char *mystrcat(char *dest, const char *src);
+.SH DESCRIPTION
+The
+.B mystrcat
+function appends the string pointed to by
+.B src
+to the end of the string pointed to by
+.B dest.
+The null terminating character from
+.B src
+is also copied to the resulting string.
+The destination must have enough space to hold the combined string.
+.SH AUTHOR
+Fatima Nadeem <fatiinadeem1@gmail.com>
+

@@ -12,7 +12,7 @@ STATIC_OBJECTS = obj/mystrfunctions_static.o obj/myfilefunctions_static.o
 PIC_OBJECTS = obj/mystrfunctions_pic.o obj/myfilefunctions_pic.o
 MAIN_OBJECT = obj/main.o
 
-.PHONY: all build static dynamic clean
+.PHONY: all build static dynamic install clean
 
 all: build
 
@@ -22,9 +22,7 @@ static: $(STATIC_TARGET)
 
 dynamic: $(DYNAMIC_TARGET)
 
-# -------------------------
 # Static Library
-# -------------------------
 
 $(STATIC_LIB): $(STATIC_OBJECTS)
 	ar rcs $(STATIC_LIB) $(STATIC_OBJECTS)
@@ -38,9 +36,7 @@ obj/myfilefunctions_static.o: src/myfilefunctions.c
 $(STATIC_TARGET): $(MAIN_OBJECT) $(STATIC_LIB)
 	$(CC) $(CFLAGS) $(MAIN_OBJECT) -Llib -lmyutils -o $(STATIC_TARGET)
 
-# -------------------------
 # Dynamic Library
-# -------------------------
 
 $(DYNAMIC_LIB): $(PIC_OBJECTS)
 	$(CC) -shared -o $(DYNAMIC_LIB) $(PIC_OBJECTS)
@@ -54,16 +50,20 @@ obj/myfilefunctions_pic.o: src/myfilefunctions.c
 $(DYNAMIC_TARGET): $(MAIN_OBJECT) $(DYNAMIC_LIB)
 	$(CC) $(CFLAGS) $(MAIN_OBJECT) -Llib -lmyutils -o $(DYNAMIC_TARGET)
 
-# -------------------------
 # Main Object
-# -------------------------
 
 obj/main.o: src/main.c
 	$(CC) $(CFLAGS) -c src/main.c -o obj/main.o
 
-# -------------------------
+# Install
+
+install: $(DYNAMIC_TARGET)
+	mkdir -p /usr/local/bin
+	mkdir -p /usr/local/share/man/man3
+	cp $(DYNAMIC_TARGET) /usr/local/bin/client
+	cp man/man3/*.1 /usr/local/share/man/man3/
+
 # Clean
-# -------------------------
 
 clean:
 	rm -f obj/*.o
