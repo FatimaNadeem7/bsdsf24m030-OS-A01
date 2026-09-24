@@ -49,3 +49,44 @@ shows the `mystrlen` symbol in the executable.
 This demonstrates that the required function code from the static library has been included in the final executable during static linking.
 
 In static linking, the linker takes the required object code from the `.a` library and places it into the executable. Therefore, functions such as `mystrlen` become part of `client_static`.
+      # Feature 4: Creating and Using Dynamic Library 
+
+## 1. Position-Independent Code (-fPIC)
+
+Position-Independent Code (PIC) is code that can run correctly regardless of where it is loaded into memory.   
+
+The `-fPIC` option tells GCC to generate position-independent code.
+
+It is important for shared libraries because a dynamic library can be loaded at different memory addresses by different programs. The code must therefore be able to work correctly without depending on a fixed memory address.
+
+In this project, `-fPIC` was used when compiling the object files for `libmyutils.so`.
+
+## 2. Difference Between Static and Dynamic Client File Sizes
+
+The static client `client_static` and dynamic client `client_dynamic` have different file sizes.
+
+The static executable is generally larger because the required code from `libmyutils.a` is copied into the executable during linking.
+
+The dynamic executable is generally smaller because the code from `libmyutils.so` remains in the shared library instead of being copied into the executable.
+
+When `client_dynamic` runs, the operating system's dynamic loader loads the required shared library separately.
+
+Therefore, the difference in size occurs because static linking includes library code inside the executable, while dynamic linking keeps the library code in a separate `.so` file.
+
+## 3. LD_LIBRARY_PATH
+
+`LD_LIBRARY_PATH` is an environment variable that tells the Linux dynamic loader which directories to search for shared libraries.
+
+When `./bin/client_dynamic` was first executed, the loader could not find `libmyutils.so` because the project's `lib/` directory was not one of its default library search locations.
+
+The error was:
+
+`cannot open shared object file: No such file or directory`
+
+We fixed this by using:
+
+`export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH`
+
+After setting this variable, the loader was able to find `libmyutils.so` in the project's `lib/` directory and the program executed successfully.
+
+This shows that the dynamic loader is responsible for finding and loading shared libraries when a dynamically linked program starts. The library must be located in a directory known to the loader.
